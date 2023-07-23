@@ -28,6 +28,7 @@ async function run() {
         await client.connect();
 
         const toysCollection = client.db('ToyMarketPlaceDB').collection('toys');
+        const addNewToysCollection = client.db('ToyMarketPlaceDB').collection('newToys');
 
         app.get('/toys', async (req, res) => {
             const result = await toysCollection.find().toArray();
@@ -43,7 +44,8 @@ async function run() {
 
         app.post('/addToys', async (req, res) => {
             const addToys = req.body;
-            console.log(addToys);
+            const result = await addNewToysCollection.insertOne(addToys);
+            res.send(result);
         })
 
 
