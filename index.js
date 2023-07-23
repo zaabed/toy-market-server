@@ -41,6 +41,11 @@ async function run() {
             res.send(result);
         })
 
+        app.post('/addToys', async (req, res) => {
+            const addToys = req.body;
+            console.log(addToys);
+        })
+
 
 
 
