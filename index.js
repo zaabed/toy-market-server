@@ -42,7 +42,7 @@ async function run() {
             res.send(result);
         })
 
-        //-------------------------------------------------------------------------------------
+        //-------Add New Toy--------
 
         app.get('/addToys', async (req, res) => {
             const result = await addNewToysCollection.find().toArray();
@@ -53,7 +53,7 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const options = {
-                projection: { _id: 0, availableQuantity: 1, price: 1, detailsDescription: 1 },
+                projection: { availableQuantity: 1, price: 1, detailsDescription: 1 },
             };
             const result = await addNewToysCollection.findOne(query, options);
             res.send(result);
@@ -62,6 +62,22 @@ async function run() {
         app.post('/addToys', async (req, res) => {
             const addToys = req.body;
             const result = await addNewToysCollection.insertOne(addToys);
+            res.send(result);
+        })
+
+        app.put('/addToys/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedToy = req.body;
+            const toy = {
+                $set: {
+                    availableQuantity: updatedToy.availableQuantity,
+                    price: updatedToy.price,
+                    detailsDescription: updatedToy.detailsDescription
+                },
+            };
+            const result = await addNewToysCollection.updateOne(filter, toy, options);
             res.send(result);
         })
 
