@@ -27,7 +27,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        const toysCollection = client.db('ToyMarketPlaceDB').collection('toys');
+        const toysCollection = client.db('ToyMarketPlaceDB').collection('toys', 'educational');
         const addNewToysCollection = client.db('ToyMarketPlaceDB').collection('newToys');
 
         app.get('/toys', async (req, res) => {
@@ -53,7 +53,7 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const options = {
-                projection: { availableQuantity: 1, price: 1, detailsDescription: 1, photoURL: 1 },
+                projection: { availableQuantity: 1, price: 1, detailsDescription: 1, photoURL: 1, toyName: 1 },
             };
             const result = await addNewToysCollection.findOne(query, options);
             res.send(result);
